@@ -1733,7 +1733,6 @@ h2 > span {
     top: 18px;
   }
   .stage {
-    max-height: 52vh;
     margin-inline: auto;
   }
 }
@@ -1851,4 +1850,113 @@ main > .audition .audition-actions {
     grid-template-columns: 1fr;
     gap: 14px;
   }
+}
+.text-overlay-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+.text-overlay-item {
+  pointer-events: auto;
+  cursor: move;
+  touch-action: none;
+  outline: none;
+}
+.text-overlay-item:focus-visible .text-hit-area {
+  stroke: white;
+  stroke-width: 2px;
+}
+.text-resize-handle {
+  cursor: nwse-resize;
+  touch-action: none;
+}
+.text-controls {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.text-controls h3 {
+  margin: 0;
+  font-size: 16px;
+}
+.text-controls-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+.text-controls button {
+  min-height: 38px;
+  padding: 6px 12px;
+  font-size: 14px;
+}
+.text-layer-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.text-layer-list button {
+  max-width: 200px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.text-layer-list button[aria-pressed='true'] {
+  border-color: var(--lime);
+  color: var(--lime);
+}
+.text-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  margin-top: 14px;
+}
+.text-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+.text-content-field,
+.text-actions {
+  grid-column: 1 / -1;
+}
+.text-fields textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 70px;
+  font: inherit;
+  padding: 10px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.text-fields input[type='range'] {
+  width: 100%;
+}
+.text-fields input[type='color'] {
+  width: 70px;
+  height: 40px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 3px;
+}
+.text-fields output {
+  color: var(--muted);
+}
+.text-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.text-fields textarea:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 3px;
 }

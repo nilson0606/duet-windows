@@ -5,6 +5,8 @@ import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
 import { CropEditor } from './crop-editor';
 import { AudioAudition } from './audio-audition';
+import { TextOverlayStage, TextOverlayControls } from './text-overlays';
+import type { TextLayer } from '../lib/text-overlay';
 import { FULL_CROP, cropImageStyle, type Crop } from '../lib/crop';
 import { renderMovie, type ExportPhase } from '../lib/render-movie';
 import {
@@ -103,6 +105,8 @@ export default function Home() {
     { x: 0.5, y: 0.25, width: 0.5, height: 0.5 },
   ]);
   const [selected, setSelected] = useState(0);
+  const [textLayers, setTextLayers] = useState<TextLayer[]>([]);
+  const [selectedText, setSelectedText] = useState<string | null>(null);
   const [lockAspect, setLockAspect] = useState(true);
   const [order, setOrder] = useState([0, 1]);
   const [audio, setAudio] = useState(0);
@@ -480,6 +484,11 @@ export default function Home() {
       '已套用影片 ' + names[selected] + ' 的畫面裁切，可繼續調整大小與位置。',
     );
   }
+  function changeTextLayers(next: TextLayer[]) {
+    if (busyRef.current || seeking) return;
+    setTextLayers(next);
+    clearResult();
+  }
   function changeBox(next: Box) {
     setBoxes((old) => old.map((b, i) => (i === selected ? next : b)));
     clearResult();
@@ -493,6 +502,7 @@ export default function Home() {
     e.preventDefault();
     e.stopPropagation();
     setSelected(index);
+    setSelectedText(null);
     const el = e.currentTarget as HTMLElement;
     el.closest<HTMLButtonElement>('button.video-box')?.focus({
       preventScroll: true,
@@ -593,6 +603,7 @@ export default function Home() {
         clips: clips as Clip[],
         boxes,
         order,
+        textLayers,
         offset,
         width: dims[0],
         height: dims[1],
@@ -915,7 +926,7 @@ export default function Home() {
                     <button
                       key={i}
                       disabled={locked}
-                      className={`video-box ${selected === i ? 'selected' : ''} ${i ? 'blue' : ''}`}
+                      className={`video-box ${selected === i && !selectedText ? 'selected' : ''} ${i ? 'blue' : ''}`}
                       aria-label={`影片 ${names[i]}，方向鍵移動畫面`}
                       style={{
                         left: `${b.x * 100}%`,
@@ -924,7 +935,10 @@ export default function Home() {
                         height: `${b.height * 100}%`,
                       }}
                       onPointerDown={(e) => pointerDown(e, i)}
-                      onFocus={() => setSelected(i)}
+                      onFocus={() => {
+                        setSelected(i);
+                        setSelectedText(null);
+                      }}
                       onKeyDown={(e) => {
                         if (locked) return;
                         const next = keyboardMove(
@@ -957,7 +971,7 @@ export default function Home() {
                         {names[i]}
                       </span>
                       {black && <span className="black-label">已結束</span>}
-                      {selected === i && (
+                      {selected === i && !selectedText && (
                         <>
                           {(['left', 'right', 'top', 'bottom'] as const).map(
                             (edge) => (
@@ -993,6 +1007,17 @@ export default function Home() {
                   <p>匯入並對齊影片後，在這裡自由構圖。</p>
                 </div>
               )}
+              {aligned && plan && (
+                <TextOverlayStage
+                  layers={textLayers}
+                  selected={selectedText}
+                  disabled={locked}
+                  onSelect={setSelectedText}
+                  onChange={changeTextLayers}
+                  width={dims[0]}
+                  height={dims[1]}
+                />
+              )}
             </div>
           </div>
           <div className="stage-hint">
@@ -1001,6 +1026,15 @@ export default function Home() {
           </div>
           {aligned && plan && (
             <div className="composition-controls">
+              <TextOverlayControls
+                layers={textLayers}
+                selected={selectedText}
+                disabled={locked}
+                onSelect={setSelectedText}
+                onChange={changeTextLayers}
+                width={dims[0]}
+                height={dims[1]}
+              />
               <div className="presets">
                 <span>快速配置</span>
                 {[
@@ -1025,7 +1059,10 @@ export default function Home() {
                       aria-pressed={selected === i}
                       className={selected === i ? 'chosen' : ''}
                       disabled={locked}
-                      onClick={() => setSelected(i)}
+                      onClick={() => {
+                        setSelected(i);
+                        setSelectedText(null);
+                      }}
                     >
                       <span className={`clip-badge ${n}`}>{n}</span>影片 {n}
                     </button>

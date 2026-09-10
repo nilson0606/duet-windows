@@ -1,3 +1,4 @@
+import type { TextLayer } from './text-overlay.ts';
 import { timeline } from './timeline.mjs';
 import { playerAudio } from './player-audio.ts';
 import {
@@ -19,6 +20,7 @@ export async function renderMovie(args: {
   clips: Clip[];
   boxes: Box[];
   order: number[];
+  textLayers?: TextLayer[];
   offset: number;
   width: number;
   height: number;
@@ -34,6 +36,7 @@ export async function renderMovie(args: {
     clips,
     boxes,
     order,
+    textLayers = [],
     offset,
     width,
     height,
@@ -112,7 +115,17 @@ export async function renderMovie(args: {
       15000,
       '影片定位逾時，請重試。（E07）',
     );
-    drawComposition(ctx, clips, boxes, width, height, 0, plan.remaining, order);
+    drawComposition(
+      ctx,
+      clips,
+      boxes,
+      width,
+      height,
+      0,
+      plan.remaining,
+      order,
+      textLayers,
+    );
     // A wake-lock prompt must never delay the recording startup.
     void navigator.wakeLock
       ?.request('screen')
@@ -215,6 +228,7 @@ export async function renderMovie(args: {
             elapsed,
             plan.remaining,
             order,
+            textLayers,
           );
           nextDraw = (Math.floor(elapsed * 30 + 0.000001) + 1) / 30;
         }

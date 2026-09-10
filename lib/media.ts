@@ -1,3 +1,4 @@
+import { drawTextLayers, type TextLayer } from './text-overlay.ts';
 import type { Crop } from './crop.ts';
 import { releasePlayerAudio } from './player-audio.ts';
 import { isClipActive } from './timeline.mjs';
@@ -143,6 +144,7 @@ export function drawComposition(
   elapsed: number,
   remaining: number[],
   order: number[],
+  textLayers: TextLayer[] = [],
 ) {
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, width, height);
@@ -174,6 +176,7 @@ export function drawComposition(
       ctx.fillRect(x, y, w, h);
     }
   }
+  drawTextLayers(ctx, textLayers, width, height);
 }
 export function supportedMime() {
   if (typeof MediaRecorder === 'undefined') return '';

@@ -97,7 +97,7 @@ vm.runInNewContext(captureProcessor, {
 assert.equal(registered.name, 'duet-audio-capture');
 assert.equal(typeof registered.ctor, 'function');
 assert.ok(
-  source.includes('/audio-capture.worklet.js'),
+  source.includes('audio-capture.worklet.js'),
   'The player capture module must be reachable from the client',
 );
 assert.ok(

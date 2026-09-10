@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/postcss';
 
 // Independent static build; the existing Sites build continues to use vite.config.ts.
 export default defineConfig({
-  root: fileURLToPath(new URL('./pages', import.meta.url)),
+  root: fileURLToPath(new URL('./static-app', import.meta.url)),
   base: process.env.PAGES_BASE_PATH || '/duet-windows/',
   publicDir: fileURLToPath(new URL('./public', import.meta.url)),
   resolve: { alias: { '@': fileURLToPath(new URL('./', import.meta.url)) } },

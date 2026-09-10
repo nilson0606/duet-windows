@@ -63,3 +63,14 @@ npm run test:build
 新增 2 項文字合成測試，連同原有 88 項測試共 90 項通過。
 Chrome／Edge 已實際驗證多行文字、顏色、拖曳、縮放、方向鍵、新增／刪除，以及 1080p 輸出；
 從下載成品解碼的文字像素範圍與預覽縮放至輸出解析度後的範圍相符。
+
+
+## GitHub Pages
+
+公開網站：https://nilson0606.github.io/duet-windows/
+
+`npm run build:pages` 產生 `dist-pages/` 純靜態網站，與原本 Sites 建置各自獨立。GitHub 的 `main` 分支更新時，`.github/workflows/pages.yml` 會驗證、建置並發布。Repository 的 Pages 來源須設定為 GitHub Actions。
+
+預設路徑為 `/duet-windows/`；其他 repository 或自訂網域可用 `PAGES_BASE_PATH` 指定（自訂網域用 `/`）。影片、聲音及文字合成在訪客瀏覽器內執行，不需要 ChatGPT 登入或 API。
+
+請勿提交私人影片、`.env`、憑證或 `outputs/`。公開內容包含網站程式及內建示範影片。

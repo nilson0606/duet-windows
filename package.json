@@ -14,7 +14,8 @@
     "test": "node --test tests/*.test.mjs",
     "typecheck": "tsc --noEmit",
     "demo:generate": "python scripts/generate-demo.py",
-    "test:build": "node scripts/verify-worker-build.mjs"
+    "test:build": "node scripts/verify-worker-build.mjs",
+    "build:pages": "vite build --config vite.pages.config.ts"
   },
   "dependencies": {
     "@base-ui/react": "1.7.0",

@@ -43,3 +43,5 @@ next-env.d.ts
 # User media stays local
 /att.*
 
+
+/dist-pages/

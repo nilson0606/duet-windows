@@ -9,7 +9,7 @@ const modules = new WeakMap<AudioContext, Promise<void>>();
 function loadProcessor(context: AudioContext) {
   let pending = modules.get(context);
   if (!pending) {
-    pending = context.audioWorklet.addModule('/audio-capture.worklet.js');
+    pending = context.audioWorklet.addModule(new URL('audio-capture.worklet.js', document.baseURI).href);
     modules.set(context, pending);
     void pending.catch(() => modules.delete(context));
   }

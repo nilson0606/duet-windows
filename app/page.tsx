@@ -305,7 +305,7 @@ export default function Home() {
     const loaded: Clip[] = [];
     try {
       for (const name of names) {
-        const response = await fetch(`/demo/camera-${name.toLowerCase()}.mp4`);
+        const response = await fetch(new URL(`demo/camera-${name.toLowerCase()}.mp4`, document.baseURI));
         if (!response.ok) throw new Error('測試影片載入失敗，請稍後重試。');
         loaded.push(
           await loadClip(

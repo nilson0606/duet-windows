@@ -203,7 +203,8 @@ function environment(t, mode = 'success') {
     destination: {},
     resume: () => Promise.resolve(),
     audioWorklet: {
-      addModule: async () => {
+      addModule: async (url) => {
+        assert.equal(url, 'https://example.test/duet-windows/audio-capture.worklet.js');
         moduleCalls++;
       },
     },
@@ -223,7 +224,7 @@ function environment(t, mode = 'success') {
   };
   Object.defineProperty(globalThis, 'document', {
     configurable: true,
-    value: doc,
+    value: Object.assign(doc, { baseURI: 'https://example.test/duet-windows/' }),
   });
   Object.defineProperty(globalThis, 'AudioWorkletNode', {
     configurable: true,

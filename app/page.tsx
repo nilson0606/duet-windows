@@ -874,17 +874,6 @@ export default function Home() {
               </button>
             </details>
           )}
-          {clips.some(Boolean) && (
-            <AudioAudition
-              key={clips.map((clip) => clip?.url ?? '').join('|')}
-              sources={clips.map((clip) =>
-                clip
-                  ? { file: clip.file, url: clip.url, duration: clip.duration }
-                  : null,
-              )}
-              disabled={!!busy}
-            />
-          )}
         </aside>
         <section className="editor">
           <div className="editor-head">
@@ -1260,6 +1249,17 @@ export default function Home() {
           )}
         </section>
       </div>
+      {clips.some(Boolean) && (
+        <AudioAudition
+          key={clips.map((clip) => clip?.url ?? '').join('|')}
+          sources={clips.map((clip) =>
+            clip
+              ? { file: clip.file, url: clip.url, duration: clip.duration }
+              : null,
+          )}
+          disabled={!!busy}
+        />
+      )}
       {result && (
         <section className="result-panel">
           <div>

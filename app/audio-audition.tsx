@@ -147,30 +147,34 @@ export function AudioAudition({
         {sources.map((source, index) => (
           <div className="audition-clip" key={names[index]}>
             <b>影片 {names[index]}</b>
-            {source ? (
-              <video
-                ref={(node) => {
-                  videos.current[index] = node;
-                }}
-                src={source.url}
-                playsInline
-                preload="metadata"
-                aria-label={`影片 ${names[index]} 試聽畫面`}
-                onLoadedMetadata={() =>
-                  setReady((old) => old.map((v, i) => (i === index ? true : v)))
-                }
-                onPlay={() => update(index)}
-                onPause={() => update(index)}
-                onEnded={() => update(index)}
-                onTimeUpdate={() => update(index)}
-                onError={() => {
-                  player.current?.pauseAll();
-                  setError(`影片 ${names[index]} 無法試聽，請重新載入。`);
-                }}
-              />
-            ) : (
-              <div className="audition-empty">尚未載入</div>
-            )}
+            <div className="audition-screen">
+              {source ? (
+                <video
+                  ref={(node) => {
+                    videos.current[index] = node;
+                  }}
+                  src={source.url}
+                  playsInline
+                  preload="metadata"
+                  aria-label={`影片 ${names[index]} 試聽畫面`}
+                  onLoadedMetadata={() =>
+                    setReady((old) =>
+                      old.map((v, i) => (i === index ? true : v)),
+                    )
+                  }
+                  onPlay={() => update(index)}
+                  onPause={() => update(index)}
+                  onEnded={() => update(index)}
+                  onTimeUpdate={() => update(index)}
+                  onError={() => {
+                    player.current?.pauseAll();
+                    setError(`影片 ${names[index]} 無法試聽，請重新載入。`);
+                  }}
+                />
+              ) : (
+                <div className="audition-empty">尚未載入</div>
+              )}
+            </div>
             <button
               type="button"
               className="secondary"
@@ -202,34 +206,38 @@ export function AudioAudition({
           </div>
         ))}
       </div>
-      <label className="audition-field">
-        試聽時間差（秒）
-        <input
-          type="number"
-          step="0.02"
-          value={offset}
-          disabled={locked}
-          onChange={(event) => {
-            player.current?.pauseAll();
-            setOffset(event.target.value);
-          }}
-        />
-      </label>
-      <p className="hint">正數讓 A 跳過開頭，負數讓 B 跳過開頭。</p>
-      <label className="audition-field">
-        共同試聽位置（秒）
-        <input
-          type="number"
-          min="0"
-          step="0.1"
-          value={start}
-          disabled={locked}
-          onChange={(event) => {
-            player.current?.pauseAll();
-            setStart(event.target.value);
-          }}
-        />
-      </label>
+      <div className="audition-settings">
+        <div>
+          <label className="audition-field">
+            試聽時間差（秒）
+            <input
+              type="number"
+              step="0.02"
+              value={offset}
+              disabled={locked}
+              onChange={(event) => {
+                player.current?.pauseAll();
+                setOffset(event.target.value);
+              }}
+            />
+          </label>
+          <p className="hint">正數讓 A 跳過開頭，負數讓 B 跳過開頭。</p>
+        </div>
+        <label className="audition-field">
+          共同試聽位置（秒）
+          <input
+            type="number"
+            min="0"
+            step="0.1"
+            value={start}
+            disabled={locked}
+            onChange={(event) => {
+              player.current?.pauseAll();
+              setStart(event.target.value);
+            }}
+          />
+        </label>
+      </div>
       <div className="audition-actions">
         <button
           type="button"

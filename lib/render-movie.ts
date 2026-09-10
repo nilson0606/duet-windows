@@ -128,7 +128,12 @@ export async function renderMovie(args: {
       .forEach((track) => stream!.addTrack(track));
     recorder = new MediaRecorder(stream, {
       mimeType: mime,
-      videoBitsPerSecond: width * height <= 854 * 480 ? 1_600_000 : 3_500_000,
+      videoBitsPerSecond:
+        width * height > 1280 * 720
+          ? 8_000_000
+          : width * height <= 854 * 480
+            ? 1_600_000
+            : 3_500_000,
       audioBitsPerSecond: 128_000,
     });
     const chunks: BlobPart[] = [];

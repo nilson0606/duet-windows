@@ -127,8 +127,8 @@ export default function Home() {
     context = useRef<AudioContext | null>(null);
   const mounted = useRef(true);
   const apiRef = useRef({ aligned: false, offset: 0, duration: 0, loaded: 0 });
-  const short = quality === '480' ? 480 : 720,
-    long = quality === '480' ? 854 : 1280;
+  const short = quality === '1080' ? 1080 : quality === '480' ? 480 : 720,
+    long = quality === '1080' ? 1920 : quality === '480' ? 854 : 1280;
   const dims =
     ratio === '9:16'
       ? [short, long]
@@ -1212,6 +1212,7 @@ export default function Home() {
                   clearResult();
                 }}
               >
+                <option value="1080">高畫質 1080p</option>
                 <option value="720">標準 720p</option>
                 <option value="480">輕量 480p</option>
               </select>
@@ -1225,7 +1226,7 @@ export default function Home() {
           <div className="editor-foot">
             <span>
               {aligned && plan
-                ? `輸出 ${sec(plan.duration)} · ${dims[0]} × ${dims[1]} · 30 fps`
+                ? `輸出 ${sec(plan.duration)} · ${dims[0]} × ${dims[1]} · 目標 30 fps`
                 : '等待兩部來源影片'}
               <small>每部 3 秒～3 分鐘、上限 250 MB</small>
             </span>

@@ -191,3 +191,25 @@ test('corrupt MOV and unsupported native AAC decoding are rejected for player fa
     /Unsupported audio codec/,
   );
 });
+
+
+test('ten-minute audio decodes completely and aligns; over-limit duration is rejected', async (t) => {
+  fs.mkdirSync('.tmp', { recursive: true });
+  const dir = fs.mkdtempSync(path.resolve('.tmp/ten-minute-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const filename = path.join(dir, 'ten-minute.mov');
+  execFileSync('ffmpeg', ['-v', 'error', '-f', 'lavfi', '-i',
+    'color=c=black:s=16x16:r=1:d=600', '-f', 'lavfi', '-i',
+    'anoisesrc=sample_rate=16000:duration=600:seed=1234:amplitude=0.2',
+    '-c:v', 'libx264', '-preset', 'ultrafast', '-c:a', 'pcm_s16le', filename]);
+  const file = new Blob([fs.readFileSync(filename)]);
+  const pcm = await decodeAudioTrack(file, 600, () => {});
+  assert.equal(pcm.length, 600 * 16000);
+  assert.ok(pcm.subarray(pcm.length - 16000).some((sample) => sample !== 0));
+  const features = fingerprints(pcm, 16000);
+  const shifted = features.map((band) => band.slice(100));
+  const result = alignFeatures(features, shifted, 0);
+  assert.equal(result.confident, true);
+  assert.ok(Math.abs(result.offset - 2) < 0.04);
+  await assert.rejects(decodeAudioTrack(file, 600.001, () => {}), /Invalid media duration/);
+});

@@ -101,9 +101,9 @@ export async function loadClip(file: File): Promise<Clip> {
     if (
       !Number.isFinite(video.duration) ||
       video.duration < 3 ||
-      video.duration > 180
+      video.duration > 600
     )
-      throw new Error('目前支援每部 3 秒至 3 分鐘的影片。');
+      throw new Error('目前支援每部 3 秒至 10 分鐘的影片。');
     if (!video.videoWidth) throw new Error('檔案沒有可讀取的影像。');
     const thumbnail = snapshot(video);
     // Import through the same native video path used by nivitrack iPhone.

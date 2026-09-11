@@ -7,7 +7,8 @@ export function tryFastAudio(
   signal: AbortSignal,
   onProgress: (progress: number) => void,
   createWorker?: () => Worker,
-  limits = { idleMs: 12000, totalMs: 45000 },
+  // Give longer tracks proportional decoding time; stalled workers still stop promptly.
+  limits = { idleMs: 12000, totalMs: Math.max(45000, duration * 250) },
 ): Promise<Float32Array | null> {
   if (signal.aborted) return Promise.reject(abortReason(signal));
   if (!createWorker) return Promise.resolve(null);

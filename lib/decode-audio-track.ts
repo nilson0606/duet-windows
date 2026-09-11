@@ -7,7 +7,7 @@ export async function decodeAudioTrack(
   duration: number,
   onProgress: (progress: number) => void,
 ): Promise<Float32Array> {
-  if (!Number.isFinite(duration) || duration < 3 || duration > 180)
+  if (!Number.isFinite(duration) || duration < 3 || duration > 600)
     throw new Error('Invalid media duration');
   const input = new Input({
     source: new BlobSource(file),

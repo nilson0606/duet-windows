@@ -1265,7 +1265,7 @@ export default function Home() {
               {aligned && plan
                 ? `輸出 ${sec(plan.duration)} · ${dims[0]} × ${dims[1]} · 目標 30 fps`
                 : '等待兩部來源影片'}
-              <small>每部 3 秒～3 分鐘、上限 250 MB</small>
+              <small>每部 3 秒～10 分鐘、上限 250 MB</small>
             </span>
             <button
               className="primary"

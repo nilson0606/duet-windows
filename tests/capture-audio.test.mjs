@@ -351,6 +351,17 @@ test('importing an iPhone movie uses the video element without reading or decodi
   file.arrayBuffer = () => {
     throw new Error('Import must not read bytes for whole-file audio decoding');
   };
+  for (const duration of [3, 181, 600]) {
+    video.duration = duration;
+    const accepted = await loadClip(file);
+    assert.equal(accepted.duration, duration);
+    disposeClip(accepted);
+  }
+  for (const duration of [2.99, 600.001, Infinity, NaN]) {
+    video.duration = duration;
+    await assert.rejects(loadClip(file), /3 秒至 10 分鐘/);
+  }
+  video.duration = 5;
   const clip = await loadClip(file);
   assert.equal(clip.video, video);
   assert.equal(clip.mono, null);

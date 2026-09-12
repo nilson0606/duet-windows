@@ -3,6 +3,7 @@
 /* oxlint-disable jsx-a11y/media-has-caption -- This is a user-supplied video editing preview; no caption track is available. */
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
+import { appVersion } from '../lib/app-version';
 import { CropEditor } from './crop-editor';
 import { AudioAudition } from './audio-audition';
 import { TextOverlayStage, TextOverlayControls } from './text-overlays';
@@ -656,7 +657,7 @@ export default function Home() {
           <Layers2 />
           <b>
             合拍<span>DUET</span>
-            <small className="platform-label">Windows</small>
+            <small className="platform-label">Windows · 版本 {appVersion}</small>
           </b>
         </div>
         <span className="local-badge">

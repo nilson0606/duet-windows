@@ -7,7 +7,7 @@ Windows Chrome／Edge 的雙影片工作台。影片在瀏覽器本機處理；�
 從 iPhone 第 17 版的 `restore-20260910-important` 建立，原始 commit：
 `e52f852488423422d55315aef0a93b6dbe92f297`。
 
-本專案使用獨立目錄、Git 與 Sites 發布目標；iPhone 專案與還原標籤保留。
+本專案使用獨立目錄、GitHub 儲存庫與 GitHub Pages 發布目標；iPhone 專案與還原標籤保留。
 歷史 iPhone 開發記錄見 README.md，移植背景見 HANDOFF_WINDOWS.md。
 
 ## Windows 操作
@@ -74,3 +74,7 @@ Chrome／Edge 已實際驗證多行文字、顏色、拖曳、縮放、方向鍵
 預設路徑為 `/duet-windows/`；其他 repository 或自訂網域可用 `PAGES_BASE_PATH` 指定（自訂網域用 `/`）。影片、聲音及文字合成在訪客瀏覽器內執行，不需要 ChatGPT 登入或 API。
 
 請勿提交私人影片、`.env`、憑證或 `outputs/`。公開內容包含網站程式及內建示範影片。
+
+## 正式版本
+
+目前為 V5，接續 Windows V4 還原點。頁首版號由 `lib/app-version.ts` 維護，對應 GitHub 的 `V5` 標籤；後續正式發布依序遞增版號並建立同名標籤。

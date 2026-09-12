@@ -1,3 +1,2 @@
-// Injected from the Git checkout by both Vite build configurations.
-declare const __APP_VERSION__: string;
-export const appVersion = __APP_VERSION__;
+// Keep the displayed release version aligned with its GitHub tag.
+export const appVersion = 'V5';
